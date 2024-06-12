@@ -19,8 +19,7 @@ class _OnboardingFirstPageBodyState extends State<OnboardingFirstPageBody> {
   final _dateInput = TextEditingController();
   DateTime? _selectedDate;
 
-  bool _maleSelected = false;
-  bool _femaleSelected = false;
+  UserGenderSelectionEntity? _selectedGender;
 
   @override
   Widget build(BuildContext context) {
@@ -37,22 +36,30 @@ class _OnboardingFirstPageBodyState extends State<OnboardingFirstPageBody> {
           const SizedBox(height: 16.0),
           ChoiceChip(
             label: Text(S.of(context).genderMaleLabel),
-            selected: _maleSelected,
+            selected: _selectedGender == UserGenderSelectionEntity.genderMale,
             onSelected: (bool selected) {
               setState(() {
-                _maleSelected = true;
-                _femaleSelected = false;
+                _selectedGender = UserGenderSelectionEntity.genderMale;
                 checkCorrectInput();
               });
             },
           ),
           ChoiceChip(
             label: Text(S.of(context).genderFemaleLabel),
-            selected: _femaleSelected,
+            selected: _selectedGender == UserGenderSelectionEntity.genderFemale,
             onSelected: (bool selected) {
               setState(() {
-                _maleSelected = false;
-                _femaleSelected = true;
+                _selectedGender = UserGenderSelectionEntity.genderFemale;
+                checkCorrectInput();
+              });
+            },
+          ),
+          ChoiceChip(
+            label: Text(S.of(context).genderDiverseLabel),
+            selected: _selectedGender == UserGenderSelectionEntity.genderDiverse,
+            onSelected: (bool selected) {
+              setState(() {
+                _selectedGender = UserGenderSelectionEntity.genderDiverse;
                 checkCorrectInput();
               });
             },
@@ -100,15 +107,8 @@ class _OnboardingFirstPageBodyState extends State<OnboardingFirstPageBody> {
   }
 
   void checkCorrectInput() {
-    UserGenderSelectionEntity? selectedGender;
-    if (_maleSelected) {
-      selectedGender = UserGenderSelectionEntity.genderMale;
-    } else if (_femaleSelected) {
-      selectedGender = UserGenderSelectionEntity.genderFemale;
-    }
-
-    if (selectedGender != null && _selectedDate != null) {
-      widget.setPageContent(true, selectedGender, _selectedDate);
+    if (_selectedGender != null && _selectedDate != null) {
+      widget.setPageContent(true, _selectedGender, _selectedDate);
     } else {
       widget.setPageContent(false, null, null);
     }

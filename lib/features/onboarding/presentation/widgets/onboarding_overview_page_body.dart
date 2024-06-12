@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:opennutritracker/generated/l10n.dart';
 
+import '../../domain/entity/user_data_mask_entity.dart';
+import '../../domain/entity/user_gender_selection_entity.dart';
+
 class OnboardingOverviewPageBody extends StatelessWidget {
   final String calorieGoalDayString;
   final String carbsGoalString;
   final String fatGoalString;
   final String proteinGoalString;
+  final UserDataMaskEntity userData;
   final Function(bool active) setButtonActive;
   final double? totalKcalCalculated;
 
@@ -16,7 +20,8 @@ class OnboardingOverviewPageBody extends StatelessWidget {
       required this.calorieGoalDayString,
       required this.carbsGoalString,
       required this.fatGoalString,
-      required this.proteinGoalString});
+      required this.proteinGoalString,
+      required this.userData});
 
   @override
   Widget build(BuildContext context) {
@@ -37,9 +42,24 @@ class OnboardingOverviewPageBody extends StatelessWidget {
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(calorieGoalDayString,
-                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        color: Theme.of(context).colorScheme.primary)),
+                Stack(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 32.0, right: 32),
+                      child: Text(calorieGoalDayString,
+                          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                              color: Theme.of(context).colorScheme.primary)),
+                    ),
+                    Positioned(
+                        bottom: -12, right:0,
+                        child: IconButton(
+                          iconSize: 18,
+                            onPressed: () => {},
+                            icon: Icon(Icons.edit)
+                        )
+                    )
+                  ],
+                ),
                 Text(S.of(context).onboardingKcalPerDayLabel,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: Theme.of(context)

@@ -4,7 +4,8 @@ import 'package:opennutritracker/generated/l10n.dart';
 
 enum UserGenderEntity {
   male,
-  female;
+  female,
+  diverse;
 
   factory UserGenderEntity.fromUserGenderDBO(UserGenderDBO genderDBO) {
     UserGenderEntity genderEntity;
@@ -15,6 +16,8 @@ enum UserGenderEntity {
       case UserGenderDBO.female:
         genderEntity = UserGenderEntity.female;
         break;
+      case UserGenderDBO.diverse:
+        genderEntity = UserGenderEntity.diverse;
     }
     return genderEntity;
   }
@@ -28,6 +31,8 @@ enum UserGenderEntity {
       case UserGenderEntity.female:
         name = S.of(context).genderFemaleLabel;
         break;
+      case UserGenderEntity.diverse:
+        name = S.of(context).genderDiverseLabel;
     }
     return name;
   }
@@ -40,6 +45,9 @@ enum UserGenderEntity {
         break;
       case UserGenderEntity.female:
         icon = Icons.female_outlined;
+        break;
+      case UserGenderEntity.diverse:
+        icon = Icons.transgender_outlined;
         break;
     }
     return icon;

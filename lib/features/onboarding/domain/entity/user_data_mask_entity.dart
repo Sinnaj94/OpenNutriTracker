@@ -47,8 +47,10 @@ class UserDataMaskEntity {
     UserGenderEntity userGender;
     if (gender == UserGenderSelectionEntity.genderMale) {
       userGender = UserGenderEntity.male;
-    } else {
+    } else if(gender == UserGenderSelectionEntity.genderFemale) {
       userGender = UserGenderEntity.female;
+    } else {
+      userGender = UserGenderEntity.diverse;
     }
     UserWeightGoalEntity userGoal;
     switch (goal) {

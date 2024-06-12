@@ -17,6 +17,8 @@ class UserGenderDBOAdapter extends TypeAdapter<UserGenderDBO> {
         return UserGenderDBO.male;
       case 1:
         return UserGenderDBO.female;
+      case 2:
+        return UserGenderDBO.diverse;
       default:
         return UserGenderDBO.male;
     }
@@ -30,6 +32,9 @@ class UserGenderDBOAdapter extends TypeAdapter<UserGenderDBO> {
         break;
       case UserGenderDBO.female:
         writer.writeByte(1);
+        break;
+      case UserGenderDBO.diverse:
+        writer.writeByte(2);
         break;
     }
   }

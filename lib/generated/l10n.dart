@@ -1611,6 +1611,16 @@ class S {
     );
   }
 
+  /// `diverse`
+  String get genderDiverseLabel {
+    return Intl.message(
+      'diverse',
+      name: 'genderDiverseLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Nothing added`
   String get nothingAddedLabel {
     return Intl.message(

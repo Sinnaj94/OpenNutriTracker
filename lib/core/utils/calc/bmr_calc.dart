@@ -23,6 +23,10 @@ class BMRCalc {
             1.8496 * user.heightCM -
             4.6756 * user.age;
         break;
+      case UserGenderEntity.diverse:
+        // TODO: Handle this case.
+        bmr = 0;
+        break;
     }
     return bmr;
   }
@@ -49,6 +53,10 @@ class BMRCalc {
             3.098 * user.heightCM -
             4.330 * user.age;
         break;
+      case UserGenderEntity.diverse:
+        // TODO: Handle this case.
+        bmr = 0;
+        break;
     }
     return bmr;
   }
@@ -68,6 +76,9 @@ class BMRCalc {
         break;
       case UserGenderEntity.female:
         a = -161;
+        break;
+      case UserGenderEntity.diverse:
+        a = 0;
         break;
     }
     final bmr = 10 * user.weightKG + 6.25 * user.heightCM - 5 * user.age + a;
@@ -123,6 +134,9 @@ class BMRCalc {
           bmr = 9.082 * user.weightKG + 658.5;
           break;
         }
+      case UserGenderEntity.diverse:
+        bmr = 0;
+        break;
     }
     return bmr;
   }

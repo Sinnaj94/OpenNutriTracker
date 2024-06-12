@@ -5,6 +5,7 @@ import 'package:opennutritracker/core/data/data_source/intake_data_source.dart';
 import 'package:opennutritracker/core/data/data_source/physical_activity_data_source.dart';
 import 'package:opennutritracker/core/data/data_source/tracked_day_data_source.dart';
 import 'package:opennutritracker/core/data/data_source/user_activity_data_source.dart';
+import 'package:opennutritracker/core/data/data_source/user_custom_attributes_data_source.dart';
 import 'package:opennutritracker/core/data/data_source/user_data_source.dart';
 import 'package:opennutritracker/core/data/repository/config_repository.dart';
 import 'package:opennutritracker/core/data/repository/intake_repository.dart';
@@ -130,7 +131,8 @@ Future<void> initLocator() async {
   // Repositories
   locator.registerLazySingleton(() => ConfigRepository(locator()));
   locator
-      .registerLazySingleton<UserRepository>(() => UserRepository(locator()));
+      .registerLazySingleton<UserRepository>(() => UserRepository(
+      locator(), locator()));
   locator.registerLazySingleton<IntakeRepository>(
       () => IntakeRepository(locator()));
   locator.registerLazySingleton<ProductsRepository>(
@@ -147,6 +149,9 @@ Future<void> initLocator() async {
       .registerLazySingleton(() => ConfigDataSource(hiveDBProvider.configBox));
   locator.registerLazySingleton<UserDataSource>(
       () => UserDataSource(hiveDBProvider.userBox));
+  locator.registerLazySingleton<UserCustomAttributesDataSource>(
+      () => UserCustomAttributesDataSource(hiveDBProvider.userCustomActivityBox)
+  );
   locator.registerLazySingleton<IntakeDataSource>(
       () => IntakeDataSource(hiveDBProvider.intakeBox));
   locator.registerLazySingleton<UserActivityDataSource>(

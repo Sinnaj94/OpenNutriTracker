@@ -34,7 +34,7 @@ class TDEECalc {
               14.2 *
               userEntity.weightKG +
           503 * (userEntity.heightCM / 100);
-    } else {
+    } else if(userEntity.gender == UserGenderEntity.female) {
       tdeeKcal = 387 -
           7.31 * userEntity.age +
           PalCalc.getPAValueFromPALValue(userEntity,
@@ -42,6 +42,9 @@ class TDEECalc {
               10.9 *
               userEntity.weightKG +
           660.7 * (userEntity.heightCM / 100);
+    } else {
+      // TODO
+      tdeeKcal = 0;
     }
     return tdeeKcal;
   }

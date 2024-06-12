@@ -11,6 +11,7 @@ import 'package:opennutritracker/core/data/dbo/physical_activity_dbo.dart';
 import 'package:opennutritracker/core/data/dbo/meal_dbo.dart';
 import 'package:opennutritracker/core/data/dbo/meal_nutriments_dbo.dart';
 import 'package:opennutritracker/core/data/dbo/tracked_day_dbo.dart';
+import 'package:opennutritracker/core/data/dbo/user_custom_attributes_dbo.dart';
 import 'package:opennutritracker/core/data/dbo/user_dbo.dart';
 import 'package:opennutritracker/core/data/dbo/user_gender_dbo.dart';
 import 'package:opennutritracker/core/data/dbo/user_pal_dbo.dart';
@@ -22,12 +23,14 @@ class HiveDBProvider extends ChangeNotifier {
   static const userActivityBoxName = 'UserActivityBox';
   static const userBoxName = 'UserBox';
   static const trackedDayBoxName = 'TrackedDayBox';
+  static const userCustomActivityBoxName = 'UserCustomActivityBox';
 
   late Box<ConfigDBO> configBox;
   late Box<IntakeDBO> intakeBox;
   late Box<UserActivityDBO> userActivityBox;
   late Box<UserDBO> userBox;
   late Box<TrackedDayDBO> trackedDayBox;
+  late Box<UserCustomAttributesDBO> userCustomActivityBox;
 
   Future<void> initHiveDB(Uint8List encryptionKey) async {
     final encryptionCypher = HiveAesCipher(encryptionKey);
@@ -44,6 +47,7 @@ class HiveDBProvider extends ChangeNotifier {
     Hive.registerAdapter(UserPALDBOAdapter());
     Hive.registerAdapter(TrackedDayDBOAdapter());
     Hive.registerAdapter(UserActivityDBOAdapter());
+    Hive.registerAdapter(UserCustomAttributesDBOAdapter());
     Hive.registerAdapter(PhysicalActivityDBOAdapter());
     Hive.registerAdapter(PhysicalActivityTypeDBOAdapter());
     Hive.registerAdapter(AppThemeDBOAdapter());
@@ -57,6 +61,8 @@ class HiveDBProvider extends ChangeNotifier {
     userBox =
         await Hive.openBox(userBoxName, encryptionCipher: encryptionCypher);
     trackedDayBox = await Hive.openBox(trackedDayBoxName,
+        encryptionCipher: encryptionCypher);
+    userCustomActivityBox = await Hive.openBox(userCustomActivityBoxName,
         encryptionCipher: encryptionCypher);
   }
 

@@ -180,6 +180,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       ?.toInt()
                       .toString() ??
                   "?",
+              userData: _onboardingBloc.userSelection,
               setButtonActive: _setOverviewPageContent,
             ),
             footer: HighlightButton(
