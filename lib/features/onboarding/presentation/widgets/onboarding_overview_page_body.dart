@@ -3,12 +3,14 @@ import 'package:opennutritracker/generated/l10n.dart';
 
 import '../../domain/entity/user_data_mask_entity.dart';
 import '../../domain/entity/user_gender_selection_entity.dart';
+import 'highlight_button.dart';
 
 class OnboardingOverviewPageBody extends StatelessWidget {
   final String calorieGoalDayString;
   final String carbsGoalString;
   final String fatGoalString;
   final String proteinGoalString;
+  final Function? onClickEdit;
   final UserDataMaskEntity userData;
   final Function(bool active) setButtonActive;
   final double? totalKcalCalculated;
@@ -21,7 +23,9 @@ class OnboardingOverviewPageBody extends StatelessWidget {
       required this.carbsGoalString,
       required this.fatGoalString,
       required this.proteinGoalString,
-      required this.userData});
+      required this.userData,
+      this.onClickEdit
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -42,23 +46,11 @@ class OnboardingOverviewPageBody extends StatelessWidget {
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Stack(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 32.0, right: 32),
-                      child: Text(calorieGoalDayString,
-                          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                              color: Theme.of(context).colorScheme.primary)),
-                    ),
-                    Positioned(
-                        bottom: -12, right:0,
-                        child: IconButton(
-                          iconSize: 18,
-                            onPressed: () => {},
-                            icon: Icon(Icons.edit)
-                        )
-                    )
-                  ],
+                Padding(
+                  padding: const EdgeInsets.only(left: 32.0, right: 32),
+                  child: Text(calorieGoalDayString,
+                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.primary)),
                 ),
                 Text(S.of(context).onboardingKcalPerDayLabel,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -108,6 +100,14 @@ class OnboardingOverviewPageBody extends StatelessWidget {
                             .colorScheme
                             .onBackground
                             .withOpacity(0.6))),
+                const Divider(),
+                const SizedBox(height: 18),
+                HighlightButton(
+                  buttonLabel: "Angaben bearbeiten",
+                  onButtonPressed: () => onClickEdit?.call(),
+                  buttonActive: onClickEdit != null,
+                  customIcon: Icons.edit,
+                )
               ],
             ),
           ),

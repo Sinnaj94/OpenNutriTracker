@@ -43,8 +43,13 @@ class TDEECalc {
               userEntity.weightKG +
           660.7 * (userEntity.heightCM / 100);
     } else {
-      // TODO
-      tdeeKcal = 0;
+      tdeeKcal = (getTDEEKcalIOM2005(
+          UserEntity.cloneWithChangingGender(
+              userEntity, UserGenderEntity.male)) +
+          getTDEEKcalIOM2005(
+              UserEntity.cloneWithChangingGender(
+                  userEntity, UserGenderEntity.female))) /
+          2;
     }
     return tdeeKcal;
   }

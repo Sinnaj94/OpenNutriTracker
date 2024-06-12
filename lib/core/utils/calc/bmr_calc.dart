@@ -24,8 +24,12 @@ class BMRCalc {
             4.6756 * user.age;
         break;
       case UserGenderEntity.diverse:
-        // TODO: Handle this case.
-        bmr = 0;
+        // Handling diverse by calculating mean value between male and female
+        bmr = (getBMRHarrisBenedict1918(UserEntity.cloneWithChangingGender(
+                    user, UserGenderEntity.male)) +
+                getBMRHarrisBenedict1918(UserEntity.cloneWithChangingGender(
+                    user, UserGenderEntity.female))) /
+            2;
         break;
     }
     return bmr;
@@ -54,8 +58,13 @@ class BMRCalc {
             4.330 * user.age;
         break;
       case UserGenderEntity.diverse:
-        // TODO: Handle this case.
-        bmr = 0;
+        bmr = (getBMRRevisedHarrisBenedict1984(
+                    UserEntity.cloneWithChangingGender(
+                        user, UserGenderEntity.male)) +
+                getBMRRevisedHarrisBenedict1984(
+                    UserEntity.cloneWithChangingGender(
+                        user, UserGenderEntity.female))) /
+            2;
         break;
     }
     return bmr;
@@ -78,7 +87,13 @@ class BMRCalc {
         a = -161;
         break;
       case UserGenderEntity.diverse:
-        a = 0;
+        a = (getBMRMifflinStJeor1990(
+            UserEntity.cloneWithChangingGender(
+                user, UserGenderEntity.male)) +
+            getBMRMifflinStJeor1990(
+                UserEntity.cloneWithChangingGender(
+                    user, UserGenderEntity.female))) /
+            2;
         break;
     }
     final bmr = 10 * user.weightKG + 6.25 * user.heightCM - 5 * user.age + a;
@@ -135,7 +150,13 @@ class BMRCalc {
           break;
         }
       case UserGenderEntity.diverse:
-        bmr = 0;
+        bmr = (getBMRSchofield11985(
+            UserEntity.cloneWithChangingGender(
+                user, UserGenderEntity.male)) +
+            getBMRSchofield11985(
+                UserEntity.cloneWithChangingGender(
+                    user, UserGenderEntity.female))) /
+            2;
         break;
     }
     return bmr;

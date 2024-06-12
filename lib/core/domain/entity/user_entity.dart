@@ -29,5 +29,17 @@ class UserEntity {
         pal: UserPALEntity.fromUserPALDBO(userDBO.pal));
   }
 
+  factory UserEntity.cloneWithChangingGender(
+      UserEntity original, UserGenderEntity newGender) {
+    return UserEntity(
+        birthday: original.birthday,
+        heightCM: original.heightCM,
+        weightKG: original.weightKG,
+        gender: newGender,
+        goal: original.goal,
+        pal: original.pal
+    );
+  }
+
   int get age => DateTime.now().difference(birthday).inDays~/365;
 }
