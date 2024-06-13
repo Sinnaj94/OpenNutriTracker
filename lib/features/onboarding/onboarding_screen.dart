@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-import 'package:opennutritracker/core/presentation/widgets/edit_custom_user_attributes_dialog.dart';
+import 'package:opennutritracker/core/domain/entity/nutrition_entity.dart';
+import 'package:opennutritracker/core/domain/entity/user_custom_attributes_entity.dart';
+import 'package:opennutritracker/core/presentation/widgets/edit_nutrition_attributes_dialog.dart';
 import 'package:opennutritracker/core/utils/locator.dart';
 import 'package:opennutritracker/core/utils/navigation_options.dart';
 import 'package:opennutritracker/features/onboarding/domain/entity/user_activity_selection_entity.dart';
@@ -183,9 +185,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   "?",
               userData: _onboardingBloc.userSelection,
               setButtonActive: _setOverviewPageContent,
-              onClickEdit: () => {
-                openEditCustomUserAttributesDialog()
-              },
+              onClickEdit: () => {openEditCustomUserAttributesDialog()},
             ),
             footer: HighlightButton(
               buttonLabel: S.of(context).buttonStartLabel,
@@ -281,33 +281,22 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   openEditCustomUserAttributesDialog() async {
-    /*
-      calorieGoalDayString: _onboardingBloc
-                      .getOverviewCalorieGoal()
-                      ?.toInt()
-                      .toString() ??
-                  "?",
-              carbsGoalString:
-                  _onboardingBloc.getOverviewCarbsGoal()?.toInt().toString() ??
-                      "?",
-              fatGoalString:
-                  _onboardingBloc.getOverviewFatGoal()?.toInt().toString() ??
-                      "?",
-              proteinGoalString: _onboardingBloc
-                      .getOverviewProteinGoal()
-                      ?.toInt()
-                      .toString() ??
-                  "?",
-     */
-    final newUserAttributes = await showDialog<bool>(
-        context: context, builder: (context) =>
-          EditCustomUserAttributesDialog(
-            originalCalorieGoal: _onboardingBloc.getOverviewCalorieGoal()!,
-            originalCarbsGoal: _onboardingBloc.getOverviewCarbsGoal()!,
-            originalFatGoal: _onboardingBloc.getOverviewFatGoal()!,
-            originalProteinGoal: _onboardingBloc.getOverviewProteinGoal()!,
-          )
-    );
-
+    var fallbackValues = NutritionEntity(
+        calories: _onboardingBloc.getOverviewCalorieGoal()!,
+        carbs: _onboardingBloc.getOverviewCarbsGoal()!,
+        fats: _onboardingBloc.getOverviewFatGoal()!,
+        proteins: _onboardingBloc.getOverviewProteinGoal()!);
+    var currentCustomValues = NutritionEntity<double?>(
+        calories: null, carbs: null, fats: null, proteins: null);
+    final newUserAttributes = await showDialog<NutritionEntity<double?>>(
+        context: context,
+        builder: (context) => EditNutritionAttributesDialog(
+              fallbackValues: fallbackValues,
+              currentCustomValues: currentCustomValues,
+            ));
+    print(newUserAttributes?.calories);
+    print(newUserAttributes?.carbs);
+    print(newUserAttributes?.fats);
+    print(newUserAttributes?.proteins);
   }
 }

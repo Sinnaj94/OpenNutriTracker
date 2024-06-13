@@ -4,65 +4,82 @@ import 'package:opennutritracker/generated/l10n.dart';
 
 class EditNutritionTextField extends StatefulWidget {
   final String title;
-  final double value;
-  const EditNutritionTextField({super.key, required this.title, required this.value});
+  final TextEditingController controller;
+  final double? value;
+  final double fallbackValue;
+  final String unit;
+
+  const EditNutritionTextField(
+      {super.key,
+      required this.title,
+      required this.controller,
+      required this.value,
+      required this.fallbackValue,
+      required this.unit});
 
   @override
   State<StatefulWidget> createState() => _EditNutritionTextFieldState();
 }
 
 class _EditNutritionTextFieldState extends State<EditNutritionTextField> {
-  late TextEditingController textEditingController;
-
   void _onValueChange() {
-    setState(() {
-    });
+    setState(() {});
   }
 
   @override
   void initState() {
-    textEditingController = TextEditingController();
-    textEditingController.text = widget.value.toInt().toString();
-    textEditingController.addListener(_onValueChange);
+    widget.controller.text =
+        (widget.value ?? widget.fallbackValue).toInt().toString();
+    widget.controller.addListener(_onValueChange);
     super.initState();
   }
 
   @override
   void dispose() {
-    textEditingController.removeListener(_onValueChange);
+    widget.controller.removeListener(_onValueChange);
     super.dispose();
   }
 
-
-  bool equalsOriginalState() {
+  bool equalsFallbackState() {
     try {
-       return int.parse(textEditingController.text) == widget.value.toInt();
-    } catch(e) {
+      return int.parse(widget.controller.text) == widget.fallbackValue.toInt();
+    } catch (e) {
+      return false;
+    }
+  }
+
+  bool equalsValueState() {
+    try {
+      return int.parse(widget.controller.text) == widget.value?.toInt();
+    } catch (e) {
       return false;
     }
   }
 
   void onPressAddButton() {
     try {
-      var number = int.parse(textEditingController.text);
-      textEditingController.text = (number + 10).toString();
-    } catch(e) {
-      textEditingController.text = "0";
+      var number = int.parse(widget.controller.text);
+      widget.controller.text = (number + 10).toString();
+    } catch (e) {
+      widget.controller.text = "0";
     }
   }
 
   void onPressRemoveButton() {
     try {
-      var number = int.parse(textEditingController.text);
-      textEditingController.text = (number - 10).toString();
-    } catch(e) {
-      textEditingController.text = "0";
+      var number = int.parse(widget.controller.text);
+      widget.controller.text = (number - 10).toString();
+    } catch (e) {
+      widget.controller.text = "0";
     }
-
   }
 
-  void onPressResetButton() {
-    textEditingController.text = widget.value.toInt().toString();
+  void onPressResetToFallbackButton() {
+    widget.controller.text = widget.fallbackValue.toInt().toString();
+  }
+
+  void onPressResetToValueButton() {
+    widget.controller.text = widget.value?.toInt().toString() ?? "0";
   }
 
   @override
@@ -75,33 +92,29 @@ class _EditNutritionTextFieldState extends State<EditNutritionTextField> {
             Padding(
               padding: const EdgeInsets.only(top: 14.0, bottom: 14.0),
               child: Text(widget.title,
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .bodyLarge),
+                  style: Theme.of(context).textTheme.bodyLarge),
             ),
-          IconButton(
-                    iconSize: 18,
-                    onPressed: equalsOriginalState() ? null: onPressResetButton,
-                    icon: const Icon(Icons.rotate_left)),
+            IconButton(
+                iconSize: 18,
+                onPressed:
+                    equalsFallbackState() ? null : onPressResetToFallbackButton,
+                icon: const Icon(Icons.settings_backup_restore)),
           ],
         ),
         TextFormField(
-          controller: textEditingController,
+          controller: widget.controller,
           keyboardType: TextInputType.number,
           decoration: InputDecoration(
-            suffixText: "kcal",
+            suffixText: widget.unit,
             prefixIcon: IconButton(
               icon: Icon(Icons.remove),
               onPressed: onPressRemoveButton,
             ),
-            suffixIcon: IconButton(
-                icon: Icon(Icons.add),
-                onPressed: onPressAddButton),
+            suffixIcon:
+                IconButton(icon: Icon(Icons.add), onPressed: onPressAddButton),
           ),
         )
       ],
     );
   }
-
 }
